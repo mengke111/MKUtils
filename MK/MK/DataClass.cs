@@ -37,7 +37,13 @@ namespace MK
 
         }
 
-
+        public class MailBody
+        {
+            public string ProjectName { get; set; }
+            public string UserName { get; set; }
+            public string Status { get; set; }
+            public string Reason { get; set; }
+        }
 
     }
     }

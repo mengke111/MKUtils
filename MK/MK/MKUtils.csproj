@@ -54,10 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigEx.cs" />
+    <Compile Include="Cry.cs" />
     <Compile Include="DataClass.cs" />
     <Compile Include="Excel.cs" />
     <Compile Include="File.cs" />
     <Compile Include="LogHelper.cs" />
+    <Compile Include="MailWork.cs" />
     <Compile Include="MD5.cs" />
     <Compile Include="MKMySqlHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

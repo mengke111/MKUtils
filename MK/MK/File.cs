@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MK
 {
-    public class File
+    public class FileMK
     {
         public static int GetFileSizeK(string localPath)
         {

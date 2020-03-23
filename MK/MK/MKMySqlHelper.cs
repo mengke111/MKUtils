@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -276,7 +277,46 @@ namespace MK
             }
 
         }
-        
+
+        public static string DownloadDBMBLFile(string picname, string picpath)
+        {
+
+            if (File.Exists(picpath))
+            {
+                return null;
+            }
+            LogHelper.Log("NetWork.DownloadDBMBLFile" + picname + "  " + picpath);
+            if (picname == null || picname == null || picpath == "" || picpath == "")
+            {
+                return null;
+            }
+            try
+            {
+                string sql = "select binarydata from Icon  where Name = '" + picname + "'";
+                byte[] image;
+
+                MySqlCommand command = new MySqlCommand(sql, getsqlCon());//查询语句根据需要修改
+                image = (byte[])command.ExecuteScalar();
+
+                if (image == null || image.Length < 200)
+                {
+                    MessageBox.Show(picname + "图片下载失败");
+                    return null;
+                }
+                //指定从数据库读取出来的图片的保存路径及名字
+                // picpath = AppDomain.CurrentDomain.BaseDirectory + @"\Icon\" + picpath;
+                //按上面的路径与名字保存图片文件
+                BinaryWriter bw = new BinaryWriter(File.Open(picpath, FileMode.OpenOrCreate));
+                bw.Write(image);
+                bw.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("DownloadDBMBLFile: " + picname + "  " + e.ToString());
+                return null;
+            }
+            return picpath;
+        }
 
     }
 
