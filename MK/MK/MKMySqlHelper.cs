@@ -249,19 +249,17 @@ namespace MK
 
         }
 
-        public static DataItem GetExistItem(string item)
+        public static DataItem GetExistItem(string item, string selectitems, string itemname)
         {
 
           
-            string sql = "select ItemName from " + SqlSheet + " where MD5 = '"+ item + "'";
-
-
+           
             try
             {
-                List<DataItem> t1 = GetList<DataItem>("select ItemName from " + SqlSheet + " where MD5 = '" + item + "'");
+                List<DataItem> t1 = GetList<DataItem>("select "+ selectitems + " from " + SqlSheet + " where " + itemname + " = '" + item + "'");
                 if (t1 == null || t1.Count == 0)
                 {
-                  //  MessageBox.Show("User Password wrong");
+                 
                     return null;
                 }
                 else
@@ -277,6 +275,8 @@ namespace MK
             }
 
         }
+
+        
 
         public static string DownloadDBMBLFile(string picname, string picpath)
         {

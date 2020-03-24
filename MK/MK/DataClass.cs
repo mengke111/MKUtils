@@ -34,6 +34,7 @@ namespace MK
         public class DataItem
         {
             public string ItemName { get; set; }
+            public string MD5 { get; set; }
 
         }
 
