@@ -23,12 +23,11 @@ namespace MK
         public static string MySQLconStr { get; internal set; }
         public static void SetSqlSheet(string str) {
             SqlSheet = str;
+            LogHelper.Log("SqlSheet: " + str);
         }
         public static void SetMySQLconStr(string str) {
             MySQLconStr = str;
         }
-
-
 
         internal static MySqlConnection getsqlCon()
         {
@@ -207,7 +206,6 @@ namespace MK
                     }
                     catch (Exception)
                     {
-
                         item.SetValue(model, null, null);
                     }
                 }
@@ -224,9 +222,17 @@ namespace MK
             return update(ssql);
         }
 
-        public static int AddItem(string item, string md5, List<data1Info> mdataList, int fileSizeK)
+
+        public static int AddProject(string SqlSheet)
         {
 
+            string ssql = "CREATE TABLE sys_" + SqlSheet + " LIKE sys_base" ;
+            return update(ssql);
+        }
+
+        public static int AddItem(string item, string md5, List<data1Info> mdataList, int fileSizeK)
+        {
+            LogHelper.Log(item + " " + md5 + " " + mdataList.Count + " " + fileSizeK);
             List<MySqlParameter> list = new List<MySqlParameter>();
             string sql = "insert  into " + SqlSheet + " set ";
             string sql2 = " ItemName=@ItemName ";
@@ -238,9 +244,9 @@ namespace MK
             list.Add(new MySqlParameter("ItemName", item));
             string[] xx = item.Split('.');
             list.Add(new MySqlParameter("FileType", xx[xx.Length - 1]));
-            list.Add(new MySqlParameter("FileSize", fileSizeK + "K"));
+            list.Add(new MySqlParameter("FileSizeK", fileSizeK));
             list.Add(new MySqlParameter("MD5", md5));
-            sql2 += " , FileType=@FileType , FileSize=@FileSize,MD5=@MD5";
+            sql2 += " , FileType=@FileType , FileSizeK=@FileSizeK,MD5=@MD5";
             sql += sql2;
 
 
