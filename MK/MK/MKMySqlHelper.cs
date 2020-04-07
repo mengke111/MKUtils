@@ -16,22 +16,36 @@ using static MK.DataClass;
 
 namespace MK
 {
+
+    public class UsedInfo
+    {
+       
+
+        public int downloadCount { get; internal set; }
+    }
+
+
+
+
     public class MKMySqlHelper
     {
         public static MySqlConnection gMySQLServerCon { get; private set; }
         public static string SqlSheet { get; internal set; }
         public static string MySQLconStr { get; internal set; }
-        public static void SetSqlSheet(string str) {
+        public static void SetSqlSheet(string str)
+        {
             SqlSheet = str;
             LogHelper.Log("SqlSheet: " + str);
         }
-        public static void SetMySQLconStr(string str) {
+        public static void SetMySQLconStr(string str)
+        {
             MySQLconStr = str;
         }
 
         internal static MySqlConnection getsqlCon()
         {
-            if (String.IsNullOrWhiteSpace(MySQLconStr)) {
+            if (String.IsNullOrWhiteSpace(MySQLconStr))
+            {
                 MessageBox.Show("MySQLconStr NULL");
                 return null;
             }
@@ -39,7 +53,7 @@ namespace MK
             {
                 if (gMySQLServerCon == null || gMySQLServerCon.State != ConnectionState.Open)
                 {
-                    LogHelper.Log("start New SqlserverConnection: " );
+                    LogHelper.Log("start New SqlserverConnection: ");
                     gMySQLServerCon = new MySqlConnection(MySQLconStr);
                     gMySQLServerCon.Open();
                     LogHelper.Log("finish New SqlserverConnection: ");
@@ -94,6 +108,23 @@ namespace MK
             sda.Fill(ds, "databases");
             return ds;
         }
+
+        private static DataSet Getds(string sql)
+        {
+            MySqlConnection sqlConnection = getsqlCon();
+            if (sqlConnection == null) return null;
+            DataSet ds = new DataSet();
+            MySqlDataAdapter sda = new MySqlDataAdapter(sql, sqlConnection);
+            sda.Fill(ds, "databases");
+            return ds;
+        }
+
+        //private static DataSet GetInfo(string ssql)
+        //{
+        //    MySqlDataAdapter sda = new MySqlDataAdapter(ssql, getsqlCon());
+        //    DataSet ds = new DataSet();
+        //    sda.Fill(ds);
+        //}
 
         public static List<T> GetList<T>(string sql) where T : class
         {
@@ -226,9 +257,21 @@ namespace MK
         public static int AddProject(string SqlSheet)
         {
 
-            string ssql = "CREATE TABLE sys_" + SqlSheet + " LIKE sys_base" ;
+            string ssql = "CREATE TABLE sys_" + SqlSheet + " LIKE sys_base";
             return update(ssql);
         }
+        public static UsedInfo GetUsedInfoNum(string SqlSheet)
+        {
+
+            string ssql = "SELECT COUNT(*) FROM sys_download_log";
+            DataSet xxxs = Getds(ssql);
+            int rowCount = int.Parse(xxxs.Tables[0].Rows[0][0].ToString());
+            UsedInfo xUsedInfo = new UsedInfo();
+            xUsedInfo.downloadCount = rowCount;
+            return xUsedInfo;
+        }
+
+       
 
         public static int AddItem(string item, string md5, List<data1Info> mdataList, int fileSizeK)
         {
@@ -254,18 +297,32 @@ namespace MK
             return MK.MKMySqlHelper.SqlEx(list, sql);
 
         }
-
-        public static DataItem GetExistItem(string item, string selectitems, string itemname)
+        public static int AddDownloadLog(string ProjectText, string mUser, string FTPPath)
         {
 
-          
-           
+            List<MySqlParameter> list = new List<MySqlParameter>();
+            string sql = "insert  into sys_download_log  set ";
+
+
+            list.Add(new MySqlParameter("project", ProjectText));
+
+            list.Add(new MySqlParameter("name", FTPPath));
+            list.Add(new MySqlParameter("user", mUser));
+
+            string sql2 = "project=@project,  name=@name , user=@user";
+            sql += sql2;
+
+            LogHelper.OnlyLog("sql: " + sql);
+
+            return MK.MKMySqlHelper.SqlEx(list, sql);
+        }
+        public static DataItem GetExistItem(string item, string selectitems, string itemname)
+        {
             try
             {
-                List<DataItem> t1 = GetList<DataItem>("select "+ selectitems + " from " + SqlSheet + " where " + itemname + " = '" + item + "'");
+                List<DataItem> t1 = GetList<DataItem>("select " + selectitems + " from " + SqlSheet + " where " + itemname + " = '" + item + "'");
                 if (t1 == null || t1.Count == 0)
                 {
-                 
                     return null;
                 }
                 else
@@ -279,14 +336,9 @@ namespace MK
                 Trace.WriteLine(ee.ToString());
                 return null;
             }
-
         }
-
-        
-
         public static string DownloadDBMBLFile(string picname, string picpath)
         {
-
             if (File.Exists(picpath))
             {
                 return null;
@@ -326,5 +378,5 @@ namespace MK
 
     }
 
-    
+
 }

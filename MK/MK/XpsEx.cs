@@ -27,7 +27,7 @@ namespace MK
             surface.LayoutTransform = transform;
         }
 
-        internal static bool GenerateXps(string path, Canvas canvas)
+        public static bool GenerateXps(string path, Canvas canvas)
         {
             if (true)
             {

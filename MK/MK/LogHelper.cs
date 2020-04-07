@@ -63,7 +63,7 @@ namespace MK
         {
             return ErrorStr;
         }
-        internal static void Error(string v)
+        public static void Error(string v)
         {
             v = "ERROR!!! " + v;
             Log(v);
