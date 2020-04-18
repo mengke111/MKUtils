@@ -98,7 +98,7 @@ namespace MBX
             }
         }
 
-        public static void CombineImages(List<string> files, string toPath, string gProFiledata)
+        public static string CombineImages(List<string> files, string toPath, string gProFiledata)
         {
 
             int fontheight = (int)(20* Type);
@@ -141,6 +141,7 @@ namespace MBX
             finalImg.Dispose();
             LogHelper.Log("大图已经生成: " + toPath);
             OpenPic(toPath);
+            return "大图已经生成: " + toPath;
         }
         public static void OpenPic(string fileName)
         {

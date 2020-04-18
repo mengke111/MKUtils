@@ -24,13 +24,15 @@ namespace MBX
     public class Printer
     {
         public static string gbmp { get; set; }
-        public static string SaveAndPrint( Canvas mainWindowMainCanvas, string sNData, string mTMData, double MBLConfigureDPITimes, string MBLConfigurePicPath, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn)
+        public static string SaveAndPrint( Canvas mainWindowMainCanvas, string sNData, string mTMData, double MBLConfigureDPITimes, string MBLConfigurePicPath, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn,double w,double h, bool isSizeAuto, bool IsLatest)
         {
+           
             string x = SaveSn(MBLConfigurePicPath, MBLConfigureDPITimes,mainWindowMainCanvas, sNData, mTMData);
-            Print(x, mainWindowMainCanvas, MBLConfigureXpsPrintOn, MBLConfigureMFGOn);
+            Print(x, mainWindowMainCanvas, MBLConfigureXpsPrintOn, MBLConfigureMFGOn,w , h, isSizeAuto);
             return x;
         }
 
+       
 
         internal static string SaveSn(string MBLConfigurePicPath,double MBLConfigureDPITimes, Canvas mainCanvas, string sNData, string mTMData = "")
         {
@@ -58,7 +60,7 @@ namespace MBX
             return tmp;
         }
 
-        private static void Print(string x, Canvas mainWindowMainCanvas, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn)
+        private static void Print(string x, Canvas mainWindowMainCanvas, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn, double w, double h,bool IsSizeAuto)
         { //加载图片到Image对象
             try
             {
@@ -66,7 +68,6 @@ namespace MBX
                 {
                     LogHelper.Log("XpsEx PrintOn");
                     XpsEx.GenerateXps(x + ".xps", mainWindowMainCanvas);
-
                 }
                 if (MBLConfigureMFGOn || !MBLConfigureXpsPrintOn)
                 {
@@ -84,10 +85,11 @@ namespace MBX
         }
 
 
-        public static void SaveAndPrintProjectCountry(Canvas mainWindowMainCanvas, string Project, string Country, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn,string MBLConfigurePicPath,double MBLConfigureDPITimes)
+        public static void SaveAndPrintProjectCountry(Canvas mainWindowMainCanvas, string Project, string Country, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn,string MBLConfigurePicPath,double MBLConfigureDPITimes, double w, double h,bool isSizeAuto, bool IsLatest)
         {
+            
             string x = SaveSn(MBLConfigurePicPath, MBLConfigureDPITimes, mainWindowMainCanvas, Project + "_" + Country + "_" + System.DateTime.Now.ToString("yyyyMMddhhmmss"));
-            Print(x, mainWindowMainCanvas,  MBLConfigureXpsPrintOn,  MBLConfigureMFGOn);
+            Print(x, mainWindowMainCanvas,  MBLConfigureXpsPrintOn,  MBLConfigureMFGOn,w,h, isSizeAuto);
         }
 
 

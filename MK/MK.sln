@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKUI", "MKQR\MKUI.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MBX", "MBX\MBX.csproj", "{DA8A7311-37A8-4AEA-818E-D4F03776AC84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MKMySQL", "MKMySQL\MKMySQL.csproj", "{E1A95B8D-FC21-4C0D-A9D7-B14BFD53F99C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{DA8A7311-37A8-4AEA-818E-D4F03776AC84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA8A7311-37A8-4AEA-818E-D4F03776AC84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA8A7311-37A8-4AEA-818E-D4F03776AC84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1A95B8D-FC21-4C0D-A9D7-B14BFD53F99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A95B8D-FC21-4C0D-A9D7-B14BFD53F99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A95B8D-FC21-4C0D-A9D7-B14BFD53F99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A95B8D-FC21-4C0D-A9D7-B14BFD53F99C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

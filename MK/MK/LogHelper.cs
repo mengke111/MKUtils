@@ -49,7 +49,7 @@ namespace MK
 
         }
 
-        internal static void Warning(string v)
+        public static void Warning(string v)
         {
             Log("Warning!!! " + v);
         }

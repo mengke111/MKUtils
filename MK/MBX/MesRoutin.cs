@@ -18,12 +18,12 @@ namespace MBX
         /// <param name="bmppath"></param>
         /// <param name="profilepath"></param>
         /// <param name="errorMsg"></param>
-        public static void SetNewFileAndUpload(string newFilePath, string mProFileVersion, string bmppath = "", string profilepath = "", string errorMsg = "")
+        public static void SetNewFileAndUpload(string AppName, string AppVersion, string newFilePath, string mProFileVersion, string bmppath = "", string profilepath = "", string errorMsg = "")
         {
             string tmp = "";
             tmp += "DateTime:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + Environment.NewLine;
-            tmp += "AppName:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Name.ToString() + Environment.NewLine;
-            tmp += "AppVersion:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() +
+            tmp += "AppName:" + AppName + Environment.NewLine;
+            tmp += "AppVersion:" + AppVersion +
                    Environment.NewLine;
            // if (mProFile != null)
             {

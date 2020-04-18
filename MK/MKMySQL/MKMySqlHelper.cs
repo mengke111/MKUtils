@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using MK;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,20 +9,19 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using static MK.DataClass;
 
-namespace MK
+namespace MKMySQL
 {
 
     public class UsedInfo
     {
-       
-
+        public double sumsize { get; internal set; }
+        public int typesize { get; internal set; }
         public int downloadCount { get; internal set; }
+        public double filecount { get; internal set; }
     }
 
 
@@ -41,6 +41,33 @@ namespace MK
         {
             MySQLconStr = str;
         }
+
+        //public class RePare
+        //{
+        //    public RePare(string name, string data, bool Bcode)
+        //    {
+        //        this.Bcode = Bcode;
+        //        this.name = name;
+        //        this.data = "N'" + data + "'";
+        //    }
+        //    public bool Bcode { get; private set; }
+        //    public string name { get; private set; }
+        //    public string data { get; private set; }
+        //}
+
+        //public class Pare
+        //{
+        //    public Pare(string name, string data)
+        //    {
+        //        this.name = name;
+        //        this.data = "N'" + data + "'";
+        //    }
+        //    public string name { get; private set; }
+        //    public string data { get; private set; }
+        //}
+
+
+
 
         internal static MySqlConnection getsqlCon()
         {
@@ -262,24 +289,64 @@ namespace MK
         }
         public static UsedInfo GetUsedInfoNum(string SqlSheet)
         {
-
+            UsedInfo xUsedInfo = new UsedInfo();
             string ssql = "SELECT COUNT(*) FROM sys_download_log";
             DataSet xxxs = Getds(ssql);
-            int rowCount = int.Parse(xxxs.Tables[0].Rows[0][0].ToString());
-            UsedInfo xUsedInfo = new UsedInfo();
-            xUsedInfo.downloadCount = rowCount;
+            xUsedInfo.downloadCount = int.Parse(xxxs.Tables[0].Rows[0][0].ToString());
+            ssql = "SELECT COUNT(*) FROM  " + SqlSheet;
+            xxxs = Getds(ssql);
+            xUsedInfo.filecount = int.Parse(xxxs.Tables[0].Rows[0][0].ToString());
+            ssql = "SELECT COUNT(DISTINCT FileType) FROM " + SqlSheet;
+             xxxs = Getds(ssql);
+            xUsedInfo.typesize = int.Parse(xxxs.Tables[0].Rows[0][0].ToString());
+            ssql = "SELECT SUM(FileSizeK) FROM " + SqlSheet;
+            xxxs = Getds(ssql); 
+            xUsedInfo.sumsize = int.Parse(xxxs.Tables[0].Rows[0][0].ToString())/(1024*1024);
+
+
+
+          
             return xUsedInfo;
         }
 
-       
+        //public static int UserSave(string text1, string text2, string text3, string cbfunctionText)
+        //{
+        //    List<RePare> list = new List<RePare>();
 
-        public static int AddItem(string item, string md5, List<data1Info> mdataList, int fileSizeK)
+        //    list.Add(new RePare("Function", cbfunctionText, true));
+        //    list.Add(new RePare("Team", text3, true));
+        //    list.Add(new RePare("passwd", text2, true));
+        //    list.Add(new RePare("name", text1, false));
+        //    list.Add(new RePare("perminission", "0", false));
+        //    string wherestr = " where  name ='" + text1 + "'";
+        //    return ReplaceWork("Users", list, wherestr);
+        //}
+
+        public static int AddItem(string sheetname,  List<SQLDataInfo> mdataList)
+        {
+           // LogHelper.Log(item + " " + md5 + " " + mdataList.Count + " " + fileSizeK);
+            List<MySqlParameter> list = new List<MySqlParameter>();
+            string sql = "insert  into " + SqlSheet + " set ";
+            string sql2 = "";
+            foreach (SQLDataInfo item in mdataList)
+            {
+                if (sql2 != "") sql2 += " , ";
+                sql2 += item.name + "=@" + item.name + " ";
+                list.Add(new MySqlParameter(item.name, item.value.Trim()));
+            }
+            sql += sql2;
+            return MKMySqlHelper.SqlEx(list, sql);
+
+        }
+
+
+        public static int AddItem(string item, string md5, List<SQLDataInfo> mdataList, int fileSizeK)
         {
             LogHelper.Log(item + " " + md5 + " " + mdataList.Count + " " + fileSizeK);
             List<MySqlParameter> list = new List<MySqlParameter>();
             string sql = "insert  into " + SqlSheet + " set ";
             string sql2 = " ItemName=@ItemName ";
-            foreach (data1Info item1 in mdataList)
+            foreach (SQLDataInfo item1 in mdataList)
             {
                 sql2 += " , " + item1.name + "=@" + item1.name + " ";
                 list.Add(new MySqlParameter(item1.name, item1.value.Trim()));
@@ -294,7 +361,7 @@ namespace MK
 
 
 
-            return MK.MKMySqlHelper.SqlEx(list, sql);
+            return MKMySqlHelper.SqlEx(list, sql);
 
         }
         public static int AddDownloadLog(string ProjectText, string mUser, string FTPPath)
@@ -312,9 +379,9 @@ namespace MK
             string sql2 = "project=@project,  name=@name , user=@user";
             sql += sql2;
 
-            LogHelper.OnlyLog("sql: " + sql);
+            LogHelper.Log("sql: " + sql);
 
-            return MK.MKMySqlHelper.SqlEx(list, sql);
+            return MKMySqlHelper.SqlEx(list, sql);
         }
         public static DataItem GetExistItem(string item, string selectitems, string itemname)
         {

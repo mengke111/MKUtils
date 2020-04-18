@@ -11,11 +11,17 @@ namespace MK
                 public string DownLoadPath { get;  set; }
             }
 
-            public class data1Info
+            public class SQLDataInfo
             {
                 public string name { get;  set; }
                 public string value { get;  set; }
+            public SQLDataInfo(string name, string value)
+            {
+                this.value = value;
+                this.name = name;
+              
             }
+        }
             public class User
             {
                 public string name { get;  set; }
