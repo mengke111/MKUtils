@@ -85,6 +85,33 @@ namespace MBX
         }
 
 
+        private static void TestPrint(string x)
+        { //加载图片到Image对象
+
+            gbmp = x;
+            System.Drawing.Printing.PrintDocument pd = new System.Drawing.Printing.PrintDocument();//Refreshpd();//
+            pd.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(pd_PrintPageTest);
+            pd.Print();
+
+        }
+        static bool x = true;
+        internal static void pd_PrintPageTest(object sender, PrintPageEventArgs e)
+        {
+            if (x)
+            {
+                LogHelper.Log("Print Exception50 * ), (int)(50 * 3.");
+                x = false;
+                e.PageSettings.PaperSize = new PaperSize("First custom size", (int)(50 * 3.937008), (int)(50 * 3.937008));
+            }
+            else
+            {
+                LogHelper.Log("Print Exception100 * ), (int)(30 * 3.");
+                x = true;
+                e.PageSettings.PaperSize = new PaperSize("First custom size", (int)(100 * 3.937008), (int)(30 * 3.937008));
+            }
+
+            e.Graphics.DrawImage(System.Drawing.Image.FromFile(gbmp), 0, 0);
+        }
         public static void SaveAndPrintProjectCountry(Canvas mainWindowMainCanvas, string Project, string Country, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn,string MBLConfigurePicPath,double MBLConfigureDPITimes, double w, double h,bool isSizeAuto, bool IsLatest)
         {
             
@@ -92,7 +119,12 @@ namespace MBX
             Print(x, mainWindowMainCanvas,  MBLConfigureXpsPrintOn,  MBLConfigureMFGOn,w,h, isSizeAuto);
         }
 
+        public static void TestSaveAndPrintProjectCountry(Canvas mainWindowMainCanvas, string Project, string Country, bool MBLConfigureXpsPrintOn, bool MBLConfigureMFGOn, string MBLConfigurePicPath, double MBLConfigureDPITimes, double w, double h, bool isSizeAuto, bool IsLatest)
+        {
 
+            string x = SaveSn(MBLConfigurePicPath, MBLConfigureDPITimes, mainWindowMainCanvas, Project + "_" + Country + "_" + System.DateTime.Now.ToString("yyyyMMddhhmmss"));
+            TestPrint(x);
+        }
 
         internal static void pd_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -132,14 +164,28 @@ namespace MBX
         static private Font titleFont;
         static private StringReader streamToPrint;
         // static private int leftMargin = 0;
-        public static void TestPrint(string MBLConfigurePrinterName)
+        public static void TestPrint(string MBLConfigurePrinterName,bool DefaultPrinter)
         {
             try
             {
                 streamToPrint = new StringReader("MBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL TestMBL Test");
                 printFont = new Font("宋体", 10);
                 titleFont = new Font("宋体", 15);
-                PaperSize pageSize = new PaperSize("First custom size", (int)(100 * 960 / 2.42), (int)(30 * 960 / 2.42));
+                PaperSize pageSize;
+                if (x)
+                {
+                    LogHelper.Log("Print Exception50 * ), (int)(50 * 3.");
+                    x = false;
+                    pageSize = new PaperSize("First custom size", (int)(50 * 3.937008), (int)(50 * 3.937008));
+                }
+                else
+                {
+                    LogHelper.Log("Print Exception100 * ), (int)(30 * 3.");
+                    x = true;
+                    pageSize = new PaperSize("First custom size", (int)(100 * 3.937008), (int)(30 * 3.937008));
+                }
+
+              
                 System.Drawing.Printing.PrintDocument pd = new System.Drawing.Printing.PrintDocument();
                 pd.DefaultPageSettings.PaperSize = pageSize;
                 LogHelper.Log("PrintName： " + MBLConfigurePrinterName);
