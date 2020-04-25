@@ -26,16 +26,26 @@ namespace MK
             {
                 public string name { get;  set; }
                 public string passwd { get;  set; }
-                public string email { get;  set; }
+                public string role { get;  set; }
                 public string salt { get;  set; }
             }
 
-            public class LoginInfo
+        public class ProjectUser
+        {
+            public string name { get; set; }
+            public string project { get; set; }
+            public string role { get; set; }
+            
+        }
+
+        public class LoginInfo
             {
                 public User mUser { get;  set; }
                 public string bu { get;  set; }
                 public string ProjectText { get;  set; }
-            }
+
+                public string ProjectSheet { get; set; }
+        }
 
         public class DataItem
         {
