@@ -304,7 +304,7 @@ namespace MKMySQL
         }
 
 
-        public static int AddProject(string SqlSheet)
+        public static int AddProject(string SqlSheet )
         {
 
             string ssql = "CREATE TABLE sys_" + SqlSheet + " LIKE sys_base";
@@ -328,9 +328,9 @@ namespace MKMySQL
                 xxxs = Getds(ssql);
                 xUsedInfo.sumsize = int.Parse(xxxs.Tables[0].Rows[0][0].ToString()) / (1024 * 1024);
             }
-            catch (Exception ee)
+            catch (Exception )
             {
-                MessageBox.Show(ee.ToString());
+             //   MessageBox.Show(ee.ToString());
             }
             return xUsedInfo;
         }
