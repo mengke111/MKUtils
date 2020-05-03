@@ -137,7 +137,7 @@ namespace MK
             private string productName;
             private string localIp;
             private string uuid;
-            public string ItemUUID;
+            //public string ItemUUID;
 
             public string TestId
             {

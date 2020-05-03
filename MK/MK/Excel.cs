@@ -59,6 +59,7 @@ namespace MK
                 }
                 sw.Close();
                 fs.Close();
+                System.Windows.Forms.MessageBox.Show("导出成功: "+ objSFD.FileName);
             }
         }
     }

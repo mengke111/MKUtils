@@ -20,24 +20,14 @@ namespace MK
                 {
                     if (!Directory.Exists(FolderPath))
                     {
-                       // LogHelper.Warning(FolderName + ": " + FolderPath + " not Exists");
                         Directory.CreateDirectory(FolderPath);
                     }
-                    else
-                    {
-                      //  LogHelper.Log("【" + FolderName + "】:" + FolderPath);
-                    }
                 }
-                else
-                {
-                   // LogHelper.Warning(FolderName + ":  Null");
-                }
+
                 return true;
             }
-            catch (Exception ee)
+            catch (Exception )
             {
-                //MessageBox.Show(errstr + " " + FolderName + "!!配置文件" + FolderPath + "出错" + ee.ToString());
-
                 return false;
             }
         }

@@ -28,7 +28,8 @@ namespace MK
                 public string passwd { get;  set; }
                 public string role { get;  set; }
                 public string salt { get;  set; }
-            }
+            	public string su { get; set; }
+        }
 
         public class ProjectUser
         {
