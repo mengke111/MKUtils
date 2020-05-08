@@ -394,21 +394,14 @@ namespace MKMySQL
         }
         public static int AddDownloadLog(string ProjectText, string mUser, string FTPPath)
         {
-
             List<MySqlParameter> list = new List<MySqlParameter>();
             string sql = "insert  into sys_download_log  set ";
-
-
             list.Add(new MySqlParameter("project", ProjectText));
-
             list.Add(new MySqlParameter("name", FTPPath));
             list.Add(new MySqlParameter("user", mUser));
-
             string sql2 = "project=@project,  name=@name , user=@user";
             sql += sql2;
-
-            LogHelper.Log("sql: " + sql);
-
+          //  LogHelper.Log("sql: " + sql);
             return MKMySqlHelper.SqlEx(list, sql);
         }
         public static DataItem GetExistItem(string SqlSheet, string item, string selectitems, string itemname)
