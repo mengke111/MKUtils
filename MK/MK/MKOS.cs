@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MK
 {
-    class MKOS
+    public class MKOS
     {
 
         public static SysInfoBean SystemInfo(out string jsonStr)
